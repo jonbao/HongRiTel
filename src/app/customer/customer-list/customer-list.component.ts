@@ -47,7 +47,7 @@ export class RandomUserService {
   <input type="text" nz-input placeholder="input search text" />
     <button nz-button nzType="primary" nzSize="large" nzSearch>查询</button>     
     <button nz-button nzType="primary" nzSize="large">增加</button>
-    <button nz-button nzType="primary" nzSize="large">删除</button>
+    <button nz-button nzType="primary" [disabled]="setOfCheckedId.size === 0" [nzLoading]="loading" nzSize="large">删除</button>    
     </nz-input-group>
   <nz-table
     nzShowSizeChanger
