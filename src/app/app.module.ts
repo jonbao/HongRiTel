@@ -15,7 +15,11 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { CustomerListComponent } from './customer/customer-list/customer-list.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
-
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 registerLocaleData(zh);
 
 @NgModule({
@@ -32,7 +36,12 @@ registerLocaleData(zh);
     IconsProviderModule,
     NzLayoutModule,
     NzTableModule,
-    NzMenuModule
+    NzMenuModule,
+    NzButtonModule,
+    NzInputModule,
+    NzIconModule,
+    NzSelectModule,
+    NzCheckboxModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
