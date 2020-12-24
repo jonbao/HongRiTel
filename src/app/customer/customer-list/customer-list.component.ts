@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from "@angular/router";
 
 interface RandomUser {
   Id: number;  
@@ -46,7 +47,7 @@ export class RandomUserService {
   template: `<nz-input-group nzSearch nzSize="large">
   <input type="text" nz-input placeholder="input search text" />
     <button nz-button nzType="primary" nzSize="large" nzSearch>查询</button>     
-    <button nz-button nzType="primary" nzSize="large">增加</button>
+    <button nz-button nzType="primary" nzSize="large" (click)="AddUser()">增加</button>
     <button nz-button nzType="primary" [disabled]="setOfCheckedId.size === 0" [nzLoading]="loading" nzSize="large">删除</button>    
     </nz-input-group>
   <nz-table
@@ -166,7 +167,9 @@ export class CustomerListComponent implements OnInit {
     { text: 'male', value: 'male' },
     { text: 'female', value: 'female' }
   ];
-
+  public AddUser(): void {
+    this.router.navigateByUrl("Customer/AddCustomer");
+  }
   loadDataFromServer(
     pageIndex: number,
     pageSize: number,
@@ -191,7 +194,8 @@ export class CustomerListComponent implements OnInit {
     this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
   }
 
-  constructor(private randomUserService: RandomUserService) {}
+  constructor(private randomUserService: RandomUserService, public router: Router,
+    public activeRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);
