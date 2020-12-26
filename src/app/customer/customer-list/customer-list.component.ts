@@ -51,6 +51,7 @@ export class RandomUserService {
     <button nz-button nzType="primary" [disabled]="setOfCheckedId.size === 0" [nzLoading]="loading" nzSize="large">删除</button>    
     </nz-input-group>
   <nz-table
+    nzSize="small"
     nzShowSizeChanger
     [nzData]="listOfRandomUser"
     [nzFrontPagination]="false"
@@ -90,7 +91,7 @@ export class RandomUserService {
         <td>{{ data.ContactNote }}</td>
         <td>{{ data.Remark }}</td>
         <td>
-        <a>查看</a> |
+        <a (click)="ViewUser()">查看</a> |
         <a>修改</a> |
         <a>删除</a>
         </td>
@@ -170,6 +171,10 @@ export class CustomerListComponent implements OnInit {
   public AddUser(): void {
     this.router.navigateByUrl("Customer/AddCustomer");
   }
+  public ViewUser(): void {
+    this.router.navigateByUrl("Customer/CustomerDetail");
+  }
+  
   loadDataFromServer(
     pageIndex: number,
     pageSize: number,

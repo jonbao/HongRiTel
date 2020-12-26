@@ -22,13 +22,18 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { CustomerOperateComponent } from './customer/customer-operate/customer-operate.component';
+import { CustomerDetailComponent } from './customer/customer-detail/customer-detail.component';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+
 registerLocaleData(zh);
 
 @NgModule({
   declarations: [
     AppComponent,
     CustomerListComponent,
-    CustomerOperateComponent
+    CustomerOperateComponent,
+    CustomerDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +51,9 @@ registerLocaleData(zh);
     NzInputModule,
     NzIconModule,
     NzSelectModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzDescriptionsModule,
+    NzBadgeModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
