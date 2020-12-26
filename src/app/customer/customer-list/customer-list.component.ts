@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from "@angular/router";
 
 interface RandomUser {
-  Id: number;  
+  Id: number;
   Gender: string;
   UserName: string;//用户名 
   Password: string;//密码 
@@ -93,7 +93,7 @@ export class RandomUserService {
         <td>
         <a (click)="ViewUser()">查看</a> |
         <a>修改</a> |
-        <a>删除</a>
+        <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="DeleteUser(data.Id)">删除</a>
         </td>
       </tr>
     </tbody>
@@ -174,7 +174,9 @@ export class CustomerListComponent implements OnInit {
   public ViewUser(): void {
     this.router.navigateByUrl("Customer/CustomerDetail");
   }
-  
+  public DeleteUser(): void {
+    alert('deleted');
+  }
   loadDataFromServer(
     pageIndex: number,
     pageSize: number,
