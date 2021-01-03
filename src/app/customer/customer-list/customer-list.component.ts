@@ -1,44 +1,66 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from "@angular/router";
 
 interface RandomUser {
-  Id: number;
-  Gender: string;
-  UserName: string;//用户名 
-  Password: string;//密码 
-  PhoneNumber: string;//电话 
-  Email: string;//Email
-  ContactNote: string;// 联系渠道 
-  Remark: string;//备注 
+  id: string;  
+  name: string;  
+  gender: string;
+  userName: string;//用户名 
+  password: string;//密码 
+  phoneNumber: string;//电话 
+  email: string;//Email
+  contactNote: string;// 联系渠道 
+  remark: string;//备注 
 }
 
 @Injectable({ providedIn: 'root' })
 export class RandomUserService {
   randomUserUrl = 'https://api.randomuser.me/';
+  CustomerUrl = 'http://localhost:1234/api/customers';
 
   getUsers(
     pageIndex: number,
     pageSize: number,
-    sortField: string | null,
-    sortOrder: string | null,
+    sortField: string|"",
+    sortOrder: string|"",
     filters: Array<{ key: string; value: string[] }>
-  ): Observable<{ results: RandomUser[] }> {
+  ): Observable<HttpResponse<any>> {
     let params = new HttpParams()
-      .append('page', `${pageIndex}`)
-      .append('results', `${pageSize}`)
-      .append('sortField', `${sortField}`)
-      .append('sortOrder', `${sortOrder}`);
+      .append('PageNumber', `${pageIndex}`)
+      .append('PageSize', `${pageSize}`)
+      .append('OrderBy', `${sortField}`)
+      .append('SortOrder', `${sortOrder}`);
     filters.forEach(filter => {
       filter.value.forEach(value => {
         params = params.append(filter.key, value);
       });
     });
-    return this.http.get<{ results: RandomUser[] }>(`${this.randomUserUrl}`, { params });
+    return this.http.get<RandomUser[]>(`${this.CustomerUrl}`, { params, observe: 'response'});
   }
+  Test(){
 
+    this.http.get<RandomUser[]>(this.CustomerUrl,{
+      params: {
+        count: String(1)
+      },
+      observe: 'response'
+    }).subscribe(  (data: HttpResponse<any>) => {
+      console.log("data.headers123");
+      console.log(data);
+      console.log(data.headers.get("x-pagination"));
+    });
+
+    // this.http.get(this.CustomerUrl,{observe: 'response'}).subscribe(  (data: HttpResponse<any>) => {
+    //     console.log("data.headers123");
+    //     console.log(data);
+    //     console.log(data.headers.get("x-pagination"));
+    // });
+
+
+  }
   constructor(private http: HttpClient) {}
 }
 
@@ -81,19 +103,19 @@ export class RandomUserService {
     </thead>
     <tbody>
       <tr *ngFor="let data of listOfRandomUser">
-        <td [nzChecked]="setOfCheckedId.has(data.Id)" (nzCheckedChange)="onItemChecked(data.Id, $event)"></td>
-        <td>{{ data.Name }}</td>
-        <td>{{ data.Gender }}</td>
-        <td>{{ data.UserName }}</td>
-        <td>{{ data.Password }}</td>
-        <td>{{ data.PhoneNumber }}</td>
-        <td>{{ data.Email }}</td>
-        <td>{{ data.ContactNote }}</td>
-        <td>{{ data.Remark }}</td>
+        <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+        <td>{{ data.name }}</td>
+        <td>{{ data.gender }}</td>
+        <td>{{ data.userName }}</td>
+        <td>{{ data.password }}</td>
+        <td>{{ data.phoneNumber }}</td>
+        <td>{{ data.email }}</td>
+        <td>{{ data.contactNote }}</td>
+        <td>{{ data.remark }}</td>
         <td>
         <a (click)="ViewUser()">查看</a> |
         <a>修改</a> |
-        <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="DeleteUser(data.Id)">删除</a>
+        <a>删除</a>
         </td>
       </tr>
     </tbody>
@@ -120,7 +142,7 @@ export class CustomerListComponent implements OnInit {
   pageIndex = 1;
   checked = false;
   indeterminate = false;
-  setOfCheckedId = new Set<number>();
+  setOfCheckedId = new Set<string>();
   listOfSelection = [
     {
       text: 'Select All Row',
@@ -131,37 +153,37 @@ export class CustomerListComponent implements OnInit {
     {
       text: 'Select Odd Row',
       onSelect: () => {
-        this.listOfRandomUser.forEach((data, index) => this.updateCheckedSet(data.Id, index % 2 !== 0));
+        this.listOfRandomUser.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 !== 0));
         this.refreshCheckedStatus();
       }
     },
     {
       text: 'Select Even Row',
       onSelect: () => {
-        this.listOfRandomUser.forEach((data, index) => this.updateCheckedSet(data.Id, index % 2 === 0));
+        this.listOfRandomUser.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 === 0));
         this.refreshCheckedStatus();
       }
     }
   ];  
   onAllChecked(value: boolean): void {
-    this.listOfRandomUser.forEach(item => this.updateCheckedSet(item.Id, value));
+    this.listOfRandomUser.forEach(item => this.updateCheckedSet(item.id, value));
     this.refreshCheckedStatus();
   }
-  updateCheckedSet(id: number, checked: boolean): void {
+  updateCheckedSet(id: string, checked: boolean): void {
     if (checked) {
       this.setOfCheckedId.add(id);
     } else {
       this.setOfCheckedId.delete(id);
     }
   }
-  onItemChecked(id: number, checked: boolean): void {
+  onItemChecked(id: string, checked: boolean): void {
     this.updateCheckedSet(id, checked);
     this.refreshCheckedStatus();
   }
 
   refreshCheckedStatus(): void {
-    this.checked = this.listOfRandomUser.every(item => this.setOfCheckedId.has(item.Id));
-    this.indeterminate = this.listOfRandomUser.some(item => this.setOfCheckedId.has(item.Id)) && !this.checked;
+    this.checked = this.listOfRandomUser.every(item => this.setOfCheckedId.has(item.id));
+    this.indeterminate = this.listOfRandomUser.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
 
   filterGender = [
@@ -174,9 +196,7 @@ export class CustomerListComponent implements OnInit {
   public ViewUser(): void {
     this.router.navigateByUrl("Customer/CustomerDetail");
   }
-  public DeleteUser(): void {
-    alert('deleted');
-  }
+  
   loadDataFromServer(
     pageIndex: number,
     pageSize: number,
@@ -185,10 +205,15 @@ export class CustomerListComponent implements OnInit {
     filter: Array<{ key: string; value: string[] }>
   ): void {
     this.loading = true;
-    this.randomUserService.getUsers(pageIndex, pageSize, sortField, sortOrder, filter).subscribe(data => {
+    this.randomUserService.getUsers(pageIndex, pageSize, sortField, sortOrder, filter).subscribe( data => {
       this.loading = false;
-      this.total = 200; // mock the total data here
-      this.listOfRandomUser = data.results;
+      var json = JSON.parse(data.headers.get("x-pagination"));
+      this.total = json.totalCount;
+      this.listOfRandomUser = data.body;
+      // console.log("listOfRandomUser");
+      // console.log(this.listOfRandomUser);
+      // console.log("ttttttttttttttttttt");
+      // console.log(data.headers.get("x-pagination"));
     });
   }
 
@@ -198,6 +223,8 @@ export class CustomerListComponent implements OnInit {
     const currentSort = sort.find(item => item.value !== null);
     const sortField = (currentSort && currentSort.key) || null;
     const sortOrder = (currentSort && currentSort.value) || null;
+    //{ 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
+    //const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
     this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
   }
 
@@ -206,5 +233,6 @@ export class CustomerListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);
+    //this.randomUserService.Test();
   }
 }
