@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: 'welcome', loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule) },
   {	path: "CustomerList",	component: CustomerListComponent	},
   {	path: "Customer/AddCustomer",	component: CustomerOperateComponent	},
-  {	path: "Customer/CustomerDetail",	component: CustomerDetailComponent	},
+  {	path: "Customer/CustomerDetail/:id",	component: CustomerDetailComponent	},
 ];
 
 @NgModule({

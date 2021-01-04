@@ -4,17 +4,17 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from "@angular/router";
 
-interface RandomUser {
-  id: string;  
-  name: string;  
-  gender: string;
-  userName: string;//用户名 
-  password: string;//密码 
-  phoneNumber: string;//电话 
-  email: string;//Email
-  contactNote: string;// 联系渠道 
-  remark: string;//备注 
-}
+// interface RandomUser {
+//   id: string;  
+//   name: string;  
+//   gender: string;
+//   userName: string;//用户名 
+//   password: string;//密码 
+//   phoneNumber: string;//电话 
+//   email: string;//Email
+//   contactNote: string;// 联系渠道 
+//   remark: string;//备注 
+// }
 
 @Injectable({ providedIn: 'root' })
 export class RandomUserService {
@@ -38,11 +38,11 @@ export class RandomUserService {
         params = params.append(filter.key, value);
       });
     });
-    return this.http.get<RandomUser[]>(`${this.CustomerUrl}`, { params, observe: 'response'});
+    return this.http.get(`${this.CustomerUrl}`, { params, observe: 'response'});
   }
   Test(){
 
-    this.http.get<RandomUser[]>(this.CustomerUrl,{
+    this.http.get(this.CustomerUrl,{
       params: {
         count: String(1)
       },
@@ -113,7 +113,7 @@ export class RandomUserService {
         <td>{{ data.contactNote }}</td>
         <td>{{ data.remark }}</td>
         <td>
-        <a (click)="ViewUser()">查看</a> |
+        <a (click)="ViewCustomer(data.id)">查看</a> |
         <a>修改</a> |
         <a>删除</a>
         </td>
@@ -135,8 +135,9 @@ export class RandomUserService {
   ]
 })
 export class CustomerListComponent implements OnInit {
+  //public customerList: Array<any>;
   total = 1;
-  listOfRandomUser: RandomUser[] = [];
+  listOfRandomUser: Array<any>;//: RandomUser[] = [];
   loading = true;
   pageSize = 10;
   pageIndex = 1;
@@ -193,8 +194,8 @@ export class CustomerListComponent implements OnInit {
   public AddUser(): void {
     this.router.navigateByUrl("Customer/AddCustomer");
   }
-  public ViewUser(): void {
-    this.router.navigateByUrl("Customer/CustomerDetail");
+  public ViewCustomer(id): void {
+    this.router.navigateByUrl("Customer/CustomerDetail/" + id);
   }
   
   loadDataFromServer(

@@ -26,6 +26,7 @@ import { CustomerDetailComponent } from './customer/customer-detail/customer-det
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { CustomerService } from "./customer/customer.service";
 
 registerLocaleData(zh);
 
@@ -57,7 +58,10 @@ registerLocaleData(zh);
     NzBadgeModule,
     NzPopconfirmModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [
+    CustomerService,
+    { provide: NZ_I18N, useValue: zh_CN }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

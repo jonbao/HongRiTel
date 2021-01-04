@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn,ValidationErrors, Validators } from '@angular/forms';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Observer } from 'rxjs';
+import { CustomerService } from "../customer.service";
+import { ActivatedRoute, Router} from "@angular/router";
 
 // @Component({
 //   selector: 'app-customer-operate',
@@ -16,43 +18,43 @@ import { Observable, Observer } from 'rxjs';
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>姓名</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
-        啊手动阀手sddsdfsdfdsf动阀手动sadfasdfasdfasdfasddddddddddddddddasdfddddddddasdfasdfasdfasdfasdfadsfasdfasdfasdfasdfasdfdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+      {{ customer.name }}
       </nz-form-control>
     </nz-form-item>    
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>用户名称</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback>
-        sadfasdfasdfads 
+      {{ customer.userName }} 
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>密码</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback>
-        的撒发大水发射点发
+      {{ customer.password }}
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7">电话</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback >
-        dsfasdfasdf
+      {{ customer.phoneNumber }}
       </nz-form-control>
     </nz-form-item>    
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>Email</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback>
-        撒旦发射点发射点发的
+      {{ customer.email }}
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7">联系渠道</nz-form-label>
       <nz-form-control [nzSpan]="15">
-        asdfasdfadsf
+      {{ customer.contactNote }}
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7">备注</nz-form-label>
       <nz-form-control [nzSpan]="15">
-        asdfasdfasdf
+      {{ customer.remark }}
       </nz-form-control>
     </nz-form-item>    
     <nz-form-item>
@@ -75,17 +77,35 @@ import { Observable, Observer } from 'rxjs';
   ]
 })
 export class CustomerDetailComponent implements OnInit {
-
-  constructor(private fb: FormBuilder) {
-
-    
+  public customer: any = {};
+  constructor(public customerDetailService:CustomerService, 
+    public router: Router,
+    public activeRoute: ActivatedRoute,
+    private fb: FormBuilder) {
+    //constructor(private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
+    var id:string;
+    this.activeRoute.paramMap.subscribe(params => {
+      //console.log("id123",params.get('id'));
+      id = params.get('id');
+    });
+    this.activeRoute.params.subscribe(
+      params => this.getCustomer(id)
+    );
   }
 
   public Cancel(): void {
     window.history.back();
+  }
+  public getCustomer(id) {
+    this.customerDetailService
+      .getCustomer(id)
+      .subscribe(
+        data => this.customer = data,
+        error => console.error(error)
+      );
   }
 }
 

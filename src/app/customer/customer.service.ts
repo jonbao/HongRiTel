@@ -11,8 +11,8 @@ export class CustomerService {
     constructor(public httpClient: HttpClient) {
     }
 
-    public getPost(): Observable<any> {
-        return this.httpClient.get(this.customerDetailURL);
+    public getCustomer(id:string): Observable<any> {
+        return this.httpClient.get(this.customerListURL+"/"+id);
     }
 
     public getPostList(): Observable<any> {
