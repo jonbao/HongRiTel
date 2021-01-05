@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn,ValidationErrors, Validators } from '@angular/forms';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Observer } from 'rxjs';
+import { ActivatedRoute, Router} from "@angular/router";
+import { CustomerService } from "../customer.service";
 
 // @Component({
 //   selector: 'app-customer-operate',
@@ -16,31 +18,31 @@ import { Observable, Observer } from 'rxjs';
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>姓名</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入姓名!">
-        <input nz-input formControlName="Name" />
+        <input nz-input formControlName="Name" [(ngModel)]="customer.name" />
       </nz-form-control>
     </nz-form-item>    
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>用户名称</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入用户名!">
-        <input nz-input formControlName="UserName" />
+        <input nz-input formControlName="UserName" [(ngModel)]="customer.userName" />
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>密码</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入密码!">
-        <input nz-input formControlName="Password" />
+        <input nz-input formControlName="Password" [(ngModel)]="customer.password" />
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7">电话</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入电话!">
-        <input nz-input formControlName="PhoneNumber" />
+        <input nz-input formControlName="PhoneNumber" [(ngModel)]="customer.phoneNumber" />
       </nz-form-control>
     </nz-form-item>    
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>Email</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback [nzErrorTip]="emailErrorTpl">
-        <input nz-input formControlName="Email" placeholder="email" type="email" />
+        <input nz-input formControlName="Email" placeholder="email" type="email" [(ngModel)]="customer.email" />
         <ng-template #emailErrorTpl let-control>
           <ng-container *ngIf="control.hasError('email')">
             The input is not valid E-mail!
@@ -54,19 +56,19 @@ import { Observable, Observer } from 'rxjs';
     <nz-form-item>
       <nz-form-label [nzSpan]="7">联系渠道</nz-form-label>
       <nz-form-control [nzSpan]="15" nzErrorTip="Please write something here!">
-        <textarea formControlName="ContactNote" nz-input rows="3" placeholder="请输入联系渠道！"></textarea>
+        <textarea formControlName="ContactNote" nz-input rows="3" placeholder="请输入联系渠道！" [(ngModel)]="customer.contactNote"></textarea>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSpan]="7">备注</nz-form-label>
       <nz-form-control [nzSpan]="15" nzErrorTip="Please write something here!">
-        <textarea formControlName="Remark" nz-input rows="3" placeholder="请输入备注！"></textarea>
+        <textarea formControlName="Remark" nz-input rows="3" placeholder="请输入备注！" [(ngModel)]="customer.remark"></textarea>
       </nz-form-control>
     </nz-form-item>    
     <nz-form-item>
       <nz-form-control [nzOffset]="7" [nzSpan]="15">
         <button nz-button nzType="primary" nzSize="large" [disabled]="!validateForm.valid">Submit</button>
-        <button nz-button nzType="primary" nzSize="large" (click)="Cancel()">Cancel</button>        
+        <button type="button" nz-button nzSize="large" (click)="Cancel()">Cancel</button>
       </nz-form-control>
     </nz-form-item>
   </form>
@@ -85,6 +87,7 @@ import { Observable, Observer } from 'rxjs';
 })
 export class CustomerOperateComponent implements OnInit {
   validateForm: FormGroup;
+  public customer: any = {};
 
   // current locale is key of the nzAutoTips
   // if it is not found, it will be searched again with `default`
@@ -105,9 +108,18 @@ export class CustomerOperateComponent implements OnInit {
       this.validateForm.controls[key].markAsDirty();
       this.validateForm.controls[key].updateValueAndValidity();
     }
-    console.log(value);
+    //console.log(value);
+    if((this.customer.id=="") || (this.customer.id==undefined)){
+      this.postCustomer(this.customer);
+    }
+    else{
+      this.putCustomer(this.customer);
+    }
   }
-  constructor(private fb: FormBuilder) {
+  constructor(
+    public customerDetailService:CustomerService,
+    public activeRoute: ActivatedRoute,
+    private fb: FormBuilder) {
     this.validateForm = this.fb.group({
       Name: ['', [Validators.required]],
       UserName: ['', [Validators.required]],
@@ -120,10 +132,44 @@ export class CustomerOperateComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    var id:string;
+    this.activeRoute.paramMap.subscribe(params => {
+      //console.log("id123",params.get('id'));
+      id = params.get('id');
+    });
+    //this.activeRoute.params.subscribe(
+    //  params => this.getCustomer(id)
+    //);
+    if((id!="") && (id!=undefined)){
+      this.getCustomer(id);
+    }
   }
-
   public Cancel(): void {
     window.history.back();
+  }
+  public getCustomer(id) {
+    this.customerDetailService
+      .getCustomer(id)
+      .subscribe(
+        data => this.customer = data,
+        error => console.error(error)
+      );
+  }
+  public postCustomer(data) {
+    this.customerDetailService
+      .postCustomer(data)
+      .subscribe(
+        data => this.customer = data,
+        error => console.error(error)
+      );
+  }
+  public putCustomer(data) {
+    this.customerDetailService
+      .putCustomer(data)
+      .subscribe(
+        data => this.customer = data,
+        error => console.error(error)
+      );
   }
 }
 

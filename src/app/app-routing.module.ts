@@ -7,7 +7,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/welcome' },
   { path: 'welcome', loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule) },
   {	path: "CustomerList",	component: CustomerListComponent	},
-  {	path: "Customer/AddCustomer",	component: CustomerOperateComponent	},
+  {	path: "Customer/CustomerOpe/:id",	component: CustomerOperateComponent	},
   {	path: "Customer/CustomerDetail/:id",	component: CustomerDetailComponent	},
 ];
 

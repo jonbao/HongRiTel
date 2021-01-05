@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 @Injectable()
@@ -23,10 +23,22 @@ export class CustomerService {
         return 0;
     }
 
-    public addPost() {
-
+    public postCustomer(data): Observable<any> {
+        const httpOptions = {
+            headers: new HttpHeaders({'Content-Type': 'application/json'})
+        }        
+        return this.httpClient.post(this.customerListURL,
+            JSON.stringify(data),
+            httpOptions);
     }
-
+    public putCustomer(data): Observable<any> {
+        const httpOptions = {
+            headers: new HttpHeaders({'Content-Type': 'application/json'})
+        }
+        return this.httpClient.put(this.customerListURL,
+            JSON.stringify(data),
+            httpOptions);
+    }
     public search() {
 
     }

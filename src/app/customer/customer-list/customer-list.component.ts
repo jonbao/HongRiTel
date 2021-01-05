@@ -59,7 +59,6 @@ export class RandomUserService {
     //     console.log(data.headers.get("x-pagination"));
     // });
 
-
   }
   constructor(private http: HttpClient) {}
 }
@@ -69,7 +68,7 @@ export class RandomUserService {
   template: `<nz-input-group nzSearch nzSize="large">
   <input type="text" nz-input placeholder="input search text" />
     <button nz-button nzType="primary" nzSize="large" nzSearch>查询</button>     
-    <button nz-button nzType="primary" nzSize="large" (click)="AddUser()">增加</button>
+    <button nz-button nzType="primary" nzSize="large" (click)="AddCustomer()">增加</button>
     <button nz-button nzType="primary" [disabled]="setOfCheckedId.size === 0" [nzLoading]="loading" nzSize="large">删除</button>    
     </nz-input-group>
   <nz-table
@@ -114,7 +113,7 @@ export class RandomUserService {
         <td>{{ data.remark }}</td>
         <td>
         <a (click)="ViewCustomer(data.id)">查看</a> |
-        <a>修改</a> |
+        <a (click)="ModifyCustomer(data.id)">修改</a> |
         <a>删除</a>
         </td>
       </tr>
@@ -191,8 +190,11 @@ export class CustomerListComponent implements OnInit {
     { text: 'male', value: 'male' },
     { text: 'female', value: 'female' }
   ];
-  public AddUser(): void {
-    this.router.navigateByUrl("Customer/AddCustomer");
+  public AddCustomer(): void {
+    this.router.navigateByUrl("Customer/CustomerOpe/");
+  }
+  public ModifyCustomer(id): void {
+    this.router.navigateByUrl("Customer/CustomerOpe/" + id);
   }
   public ViewCustomer(id): void {
     this.router.navigateByUrl("Customer/CustomerDetail/" + id);
