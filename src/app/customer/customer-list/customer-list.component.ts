@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from "@angular/router";
 import { CustomerService } from "../customer.service";
 
+// interface SearchItem{
+//   keyword:string
+// }
 // interface RandomUser {
 //   id: string;  
 //   name: string;  
@@ -27,13 +30,15 @@ export class RandomUserService {
     pageSize: number,
     sortField: string|"",
     sortOrder: string|"",
+    searchKeyWord: string|"",
     filters: Array<{ key: string; value: string[] }>
   ): Observable<HttpResponse<any>> {
     let params = new HttpParams()
       .append('PageNumber', `${pageIndex}`)
       .append('PageSize', `${pageSize}`)
       .append('OrderBy', `${sortField}`)
-      .append('SortOrder', `${sortOrder}`);
+      .append('SortOrder', `${sortOrder}`)
+      .append('SearchKeyWord', `${searchKeyWord}`);
     filters.forEach(filter => {
       filter.value.forEach(value => {
         params = params.append(filter.key, value);
@@ -78,6 +83,7 @@ export class CustomerListComponent implements OnInit {
   pageIndex = 1;
   checked = false;
   indeterminate = false;
+  searchKeyWord = "";
   setOfCheckedId = new Set<string>();
   listOfSelection = [
     {
@@ -126,6 +132,9 @@ export class CustomerListComponent implements OnInit {
     { text: 'male', value: 'male' },
     { text: 'female', value: 'female' }
   ];
+  public SearchCustomer(): void {
+    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
+  }
   public AddCustomer(): void {
     this.router.navigateByUrl("Customer/CustomerOpe/");
   }
@@ -138,11 +147,11 @@ export class CustomerListComponent implements OnInit {
   public deleteRow(id): void {
     this.listOfRandomUser = this.listOfRandomUser.filter(d => d.id !== id);
     this.deleteCustomer(id);
-    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);
+    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
   }
   public DeleteCustomers(): void {
     this.deleteCustomers();
-    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);    
+    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);    
   }
   public ConvertToStrs()
   {
@@ -174,10 +183,11 @@ export class CustomerListComponent implements OnInit {
     pageSize: number,
     sortField: string | null,
     sortOrder: string | null,
+    searchKeyWord: string | null, 
     filter: Array<{ key: string; value: string[] }>
   ): void {
     this.loading = true;
-    this.randomUserService.getUsers(pageIndex, pageSize, sortField, sortOrder, filter).subscribe( data => {
+    this.randomUserService.getUsers(pageIndex, pageSize, sortField, sortOrder,searchKeyWord, filter).subscribe( data => {
       this.loading = false;
       var json = JSON.parse(data.headers.get("x-pagination"));
       this.total = json.totalCount;
@@ -195,16 +205,17 @@ export class CustomerListComponent implements OnInit {
     const currentSort = sort.find(item => item.value !== null);
     const sortField = (currentSort && currentSort.key) || null;
     const sortOrder = (currentSort && currentSort.value) || null;
+    const searchKeyWord = "";
     //{ 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
     //const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
-    this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
+    this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, searchKeyWord, filter);
   }
 
   constructor(public customerDetailService:CustomerService, private randomUserService: RandomUserService, public router: Router,
     public activeRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);
+    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
     //this.randomUserService.Test();
   }
 }
