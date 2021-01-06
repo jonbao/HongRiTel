@@ -2,7 +2,7 @@
     <input type="text" nz-input placeholder="input search text" />
       <button nz-button nzType="primary" nzSize="large" nzSearch>查询</button>     
       <button nz-button nzType="primary" nzSize="large" (click)="AddCustomer()">增加</button>
-      <button nz-button nzType="primary" [disabled]="setOfCheckedId.size === 0" [nzLoading]="loading" nzSize="large">删除</button>    
+      <button nz-popconfirm nzType="primary" [disabled]="setOfCheckedId.size === 0" nzPopconfirmTitle="Are you sure delete the selected customer(s)?" nzPopconfirmPlacement="topLeft" nz-button nzSize="large" (click)="DeleteCustomers()" [nzLoading]="loading" >删除</button>      
       </nz-input-group>
     <nz-table
       nzSize="small"
@@ -47,7 +47,7 @@
           <td>
           <a (click)="ViewCustomer(data.id)">查看</a> |
           <a (click)="ModifyCustomer(data.id)">修改</a> |
-          <a>删除</a>
+          <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">删除</a>
           </td>
         </tr>
       </tbody>

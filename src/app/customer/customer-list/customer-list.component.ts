@@ -3,6 +3,7 @@ import { Component, Injectable, OnInit } from '@angular/core';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from "@angular/router";
+import { CustomerService } from "../customer.service";
 
 // interface RandomUser {
 //   id: string;  
@@ -134,7 +135,40 @@ export class CustomerListComponent implements OnInit {
   public ViewCustomer(id): void {
     this.router.navigateByUrl("Customer/CustomerDetail/" + id);
   }
-  
+  public deleteRow(id): void {
+    this.listOfRandomUser = this.listOfRandomUser.filter(d => d.id !== id);
+    this.deleteCustomer(id);
+    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);
+  }
+  public DeleteCustomers(): void {
+    this.deleteCustomers();
+    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);    
+  }
+  public ConvertToStrs()
+  {
+    var str = "(^";
+    this.setOfCheckedId.forEach(element => {
+      str += "," + element;
+    });
+    return str.replace("^,","")+")";
+  }
+  public deleteCustomers() {
+    var ids = this.ConvertToStrs();
+    this.customerDetailService
+      .deleteCustomers(ids)
+      .subscribe(
+        //data => this.customer = data,
+        //error => console.error(error)
+      );
+  }  
+  public deleteCustomer(id) {
+    this.customerDetailService
+      .deleteCustomer(id)
+      .subscribe(
+        //data => this.customer = data,
+        //error => console.error(error)
+      );
+  }  
   loadDataFromServer(
     pageIndex: number,
     pageSize: number,
@@ -166,7 +200,7 @@ export class CustomerListComponent implements OnInit {
     this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
   }
 
-  constructor(private randomUserService: RandomUserService, public router: Router,
+  constructor(public customerDetailService:CustomerService, private randomUserService: RandomUserService, public router: Router,
     public activeRoute: ActivatedRoute) {}
 
   ngOnInit(): void {

@@ -39,6 +39,14 @@ export class CustomerService {
             JSON.stringify(data),
             httpOptions);
     }
+    public deleteCustomer(id): Observable<any> {
+        return this.httpClient.delete(this.customerListURL+"/"+id);
+    }
+    public deleteCustomers(ids): Observable<any> {
+        return this.httpClient.delete(this.customerListURL+"/"+ids);
+    }
+    
+    
     public search() {
 
     }
