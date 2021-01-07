@@ -44,6 +44,7 @@ export class RandomUserService {
         params = params.append(filter.key, value);
       });
     });
+    console.log("params",params);
     return this.http.get(`${this.CustomerUrl}`, { params, observe: 'response'});
   }
   Test(){

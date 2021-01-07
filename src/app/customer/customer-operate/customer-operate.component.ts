@@ -47,6 +47,7 @@ export class CustomerOperateComponent implements OnInit {
     private fb: FormBuilder) {
     this.validateForm = this.fb.group({
       Name: ['', [Validators.required]],
+      Gender: ['', [Validators.maxLength(10)]],
       UserName: ['', [Validators.required]],
       Email: ['', [Validators.email, Validators.required]],
       Password: ['', [Validators.required]],

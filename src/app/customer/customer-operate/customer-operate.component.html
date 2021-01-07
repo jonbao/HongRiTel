@@ -5,7 +5,13 @@
       <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入姓名!">
         <input nz-input formControlName="Name" [(ngModel)]="customer.name" />
       </nz-form-control>
-    </nz-form-item>    
+    </nz-form-item>  
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>性别</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入用户性别!">
+          <input nz-input formControlName="Gender" [(ngModel)]="customer.gender" />
+        </nz-form-control>
+      </nz-form-item>      
     <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>用户名称</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入用户名!">
