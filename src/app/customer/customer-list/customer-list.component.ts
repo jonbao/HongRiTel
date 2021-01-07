@@ -134,6 +134,7 @@ export class CustomerListComponent implements OnInit {
     { text: 'female', value: 'female' }
   ];
   public SearchCustomer(): void {
+    localStorage.setItem("searchKeyWord",this.searchKeyWord);
     this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
   }
   public AddCustomer(): void {
@@ -201,22 +202,22 @@ export class CustomerListComponent implements OnInit {
   }
 
   onQueryParamsChange(params: NzTableQueryParams): void {
-    console.log(params);
     const { pageSize, pageIndex, sort, filter } = params;
     const currentSort = sort.find(item => item.value !== null);
     const sortField = (currentSort && currentSort.key) || null;
     const sortOrder = (currentSort && currentSort.value) || null;
-    const searchKeyWord = "";
+    this.searchKeyWord = localStorage.getItem('searchKeyWord');
     //{ 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
     //const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
-    this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, searchKeyWord, filter);
+    this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, this.searchKeyWord, filter);
   }
 
   constructor(public customerDetailService:CustomerService, private randomUserService: RandomUserService, public router: Router,
     public activeRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
+    //console.log("111111111111111111");
+    //this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
     //this.randomUserService.Test();
   }
 }

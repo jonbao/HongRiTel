@@ -27,6 +27,8 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { CustomerService } from "./customer/customer.service";
+import { RouteReuseStrategy } from '@angular/router';
+import { AppRoutingCache } from './app-routing.cache';
 
 registerLocaleData(zh);
 
@@ -60,7 +62,8 @@ registerLocaleData(zh);
   ],
   providers: [
     CustomerService,
-    { provide: NZ_I18N, useValue: zh_CN }
+    { provide: NZ_I18N, useValue: zh_CN },
+    { provide: RouteReuseStrategy, useClass: AppRoutingCache }
   ],
   bootstrap: [AppComponent]
 })
