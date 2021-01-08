@@ -22,14 +22,14 @@
           [(nzChecked)]="checked"
           [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="onAllChecked($event)"></th>      
-          <th nzColumnKey="Name" [nzSortFn]="true">姓名</th>
-          <th nzColumnKey="Gender" [nzFilters]="filterGender" [nzFilterFn]="true">性别</th>
-          <th nzColumnKey="UserName" [nzSortFn]="true">用户名</th>
-          <th nzColumnKey="Password" [nzSortFn]="true">密码</th>
-          <th nzColumnKey="PhoneNumber" [nzSortFn]="true">电话</th>
-          <th nzColumnKey="Email" [nzSortFn]="true">Email</th>
-          <th nzColumnKey="ContactNote" [nzSortFn]="true">联系渠道</th>
-          <th nzColumnKey="Remark" [nzSortFn]="true">备注</th>
+          <th nzColumnKey="Name" [nzSortFn]="true" [nzSortOrder]="NameSortOrder">姓名</th>
+          <th nzColumnKey="Gender">性别</th>
+          <th nzColumnKey="UserName" [nzSortFn]="true" [nzSortOrder]="UserNameSortOrder">用户名</th>
+          <th nzColumnKey="Password">密码</th>
+          <th nzColumnKey="PhoneNumber">电话</th>
+          <th nzColumnKey="Email">Email</th>
+          <th nzColumnKey="ContactNote">联系渠道</th>
+          <th nzColumnKey="Remark">备注</th>
           <th>操作</th>
         </tr>
       </thead>

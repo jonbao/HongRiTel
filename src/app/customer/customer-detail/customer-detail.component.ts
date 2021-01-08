@@ -4,7 +4,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Observer } from 'rxjs';
 import { CustomerService } from "../customer.service";
 import { ActivatedRoute, Router} from "@angular/router";
-
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-customer-detail',
   templateUrl: './customer-detail.component.html',
@@ -15,6 +15,7 @@ export class CustomerDetailComponent implements OnInit {
   constructor(public customerDetailService:CustomerService, 
     public router: Router,
     public activeRoute: ActivatedRoute,
+    private _location: Location,
     private fb: FormBuilder) {
     //constructor(private fb: FormBuilder) {
   }
@@ -32,6 +33,7 @@ export class CustomerDetailComponent implements OnInit {
 
   public Cancel(): void {
     window.history.back();
+    this._location.back();
   }
   public getCustomer(id) {
     this.customerDetailService

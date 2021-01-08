@@ -6,7 +6,7 @@ import { CustomerDetailComponent } from './customer/customer-detail/customer-det
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/welcome' },
   { path: 'welcome', loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule) },
-  {	path: "CustomerList",	component: CustomerListComponent	}, //data: {keep: true},
+  {	path: "CustomerList", component: CustomerListComponent	},//data: {keep: true},
   {	path: "Customer/CustomerOpe/:id",	component: CustomerOperateComponent	},
   {	path: "Customer/CustomerDetail/:id",	component: CustomerDetailComponent	},
 ];

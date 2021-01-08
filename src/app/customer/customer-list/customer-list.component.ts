@@ -85,6 +85,9 @@ export class CustomerListComponent implements OnInit {
   checked = false;
   indeterminate = false;
   searchKeyWord = "";
+  NameSortOrder = "";
+  UserNameSortOrder = "";
+  firstRun = true;
   setOfCheckedId = new Set<string>();
   listOfSelection = [
     {
@@ -134,7 +137,14 @@ export class CustomerListComponent implements OnInit {
     { text: 'female', value: 'female' }
   ];
   public SearchCustomer(): void {
-    localStorage.setItem("searchKeyWord",this.searchKeyWord);
+    this.pageIndex = 1;
+    this.NameSortOrder = null;
+    this.UserNameSortOrder = null;
+    localStorage.removeItem("searchKeyWord");
+    localStorage.removeItem("pageIndex");
+    localStorage.removeItem("pageSize");
+    localStorage.removeItem("sortField");
+    localStorage.removeItem("sortOrder");    
     this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
   }
   public AddCustomer(): void {
@@ -194,30 +204,57 @@ export class CustomerListComponent implements OnInit {
       var json = JSON.parse(data.headers.get("x-pagination"));
       this.total = json.totalCount;
       this.listOfRandomUser = data.body;
-      // console.log("listOfRandomUser");
-      // console.log(this.listOfRandomUser);
-      // console.log("ttttttttttttttttttt");
-      // console.log(data.headers.get("x-pagination"));
+      localStorage.setItem("searchKeyWord",searchKeyWord);
+      localStorage.setItem("pageIndex",pageIndex.toString());
+      localStorage.setItem("pageSize",pageSize.toString());
+      localStorage.setItem("sortField",sortField);
+      localStorage.setItem("sortOrder",sortOrder);
     });
   }
 
   onQueryParamsChange(params: NzTableQueryParams): void {
+    console.log("inininin");
+    if(this.firstRun)
+    {
+      this.firstRun = false;
+      return;
+    }
+    console.log("runrunrun");
     const { pageSize, pageIndex, sort, filter } = params;
-    const currentSort = sort.find(item => item.value !== null);
+    const currentSort = sort.find(item => (item.value !== null) && (item.value !== ""));
     const sortField = (currentSort && currentSort.key) || null;
     const sortOrder = (currentSort && currentSort.value) || null;
-    this.searchKeyWord = localStorage.getItem('searchKeyWord');
     //{ 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
     //const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
     this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, this.searchKeyWord, filter);
+    this.pageIndex = pageIndex; 
+    console.log("params11111",params);
+    console.log("onQueryParamsChange");
   }
 
   constructor(public customerDetailService:CustomerService, private randomUserService: RandomUserService, public router: Router,
     public activeRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    //console.log("111111111111111111");
-    //this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
     //this.randomUserService.Test();
+    this.searchKeyWord = localStorage.getItem('searchKeyWord');
+    console.log("localStorage.getItem('pageIndex')",localStorage.getItem('pageIndex'));
+    if(Number(localStorage.getItem('pageIndex')) != 0){
+      this.pageIndex = Number(localStorage.getItem('pageIndex'));
+    }
+    if(Number(localStorage.getItem('pageSize')) != 0){
+      this.pageSize = Number(localStorage.getItem('pageSize'));
+    }
+    if(localStorage.getItem('sortField') == "UserName"){
+      this.UserNameSortOrder = localStorage.getItem('sortOrder');
+    }
+    if(localStorage.getItem('sortField') == "Name"){
+      this.NameSortOrder = localStorage.getItem('sortOrder');
+    }        
+    console.log("ngOnInit");
+    console.log("localStorage.getItem('sortField')",localStorage.getItem('sortField'));
+    console.log("localStorage.getItem('sortOrder')",localStorage.getItem('sortOrder'));
+
+    this.loadDataFromServer(this.pageIndex, this.pageSize, localStorage.getItem('sortField'), localStorage.getItem('sortOrder'), this.searchKeyWord, []);
   }
 }
