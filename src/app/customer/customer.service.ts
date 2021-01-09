@@ -45,7 +45,9 @@ export class CustomerService {
     public deleteCustomers(ids): Observable<any> {
         return this.httpClient.delete(this.customerListURL+"/"+ids);
     }
-    
+    public async deleteCustomersAsync(ids): Promise<Observable<any>> {
+        return await this.httpClient.delete(this.customerListURL+"/"+ids);
+    }
     
     public search() {
 

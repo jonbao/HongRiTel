@@ -4,7 +4,8 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from "@angular/router";
 import { CustomerService } from "../customer.service";
-
+import { TestBed } from '@angular/core/testing';
+import { forkJoin } from 'rxjs';  // RxJS 6 syntax
 // interface SearchItem{
 //   keyword:string
 // }
@@ -157,13 +158,30 @@ export class CustomerListComponent implements OnInit {
     this.router.navigateByUrl("Customer/CustomerDetail/" + id);
   }
   public deleteRow(id): void {
-    this.listOfRandomUser = this.listOfRandomUser.filter(d => d.id !== id);
-    this.deleteCustomer(id);
-    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
+    this.customerDetailService.deleteCustomer(id).toPromise().then(()=>
+      this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, [])
+    );  
   }
-  public DeleteCustomers(): void {
-    this.deleteCustomers();
-    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);    
+  public DeleteCustomers():void {
+    var ids = this.ConvertToStrs();
+    this.customerDetailService.deleteCustomers(ids).toPromise().then(()=>
+        this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, [])
+      );  
+  }
+  public requestDataFromMultipleSources(): Observable<any[]> {
+    var ids = this.ConvertToStrs();    
+    let response1 = this.customerDetailService.deleteCustomers(ids);
+    let response2 = this.randomUserService.getUsers(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
+    // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
+    const observable = new Observable(function subscribe(subscriber) {
+      subscriber.next(1);
+      subscriber.next(2);
+      subscriber.next(3);
+      subscriber.complete();
+    });
+    // const observablePromise = obervable.toPromise();
+    // response1.toPromise().then(response2)
+    return forkJoin([response1, response2]);
   }
   public ConvertToStrs()
   {
@@ -204,6 +222,11 @@ export class CustomerListComponent implements OnInit {
       var json = JSON.parse(data.headers.get("x-pagination"));
       this.total = json.totalCount;
       this.listOfRandomUser = data.body;
+      if(this.listOfRandomUser.length == 0)
+      {
+        this.pageIndex = this.pageIndex - 1;
+        if(this.pageIndex <= 1) this.pageIndex = 1;
+      }      
       localStorage.setItem("searchKeyWord",searchKeyWord);
       localStorage.setItem("pageIndex",pageIndex.toString());
       localStorage.setItem("pageSize",pageSize.toString());
