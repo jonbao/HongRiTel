@@ -29,6 +29,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { CustomerService } from "./customer/customer.service";
 import { RouteReuseStrategy } from '@angular/router';
 import { AppRoutingCache } from './app-routing.cache';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 registerLocaleData(zh);
 
@@ -58,7 +59,8 @@ registerLocaleData(zh);
     NzCheckboxModule,
     NzDescriptionsModule,
     NzBadgeModule,
-    NzPopconfirmModule
+    NzPopconfirmModule,
+    NzMessageModule,
   ],
   providers: [
     CustomerService,

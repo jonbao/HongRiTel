@@ -4,6 +4,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Observer } from 'rxjs';
 import { ActivatedRoute, Router} from "@angular/router";
 import { CustomerService } from "../customer.service";
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-customer-operate',
@@ -42,6 +43,7 @@ export class CustomerOperateComponent implements OnInit {
     }
   }
   constructor(
+    private message: NzMessageService,
     public customerDetailService:CustomerService,
     public activeRoute: ActivatedRoute,
     private fb: FormBuilder) {
@@ -85,16 +87,33 @@ export class CustomerOperateComponent implements OnInit {
     this.customerDetailService
       .postCustomer(data)
       .subscribe(
-        data => this.customer = data,
-        error => console.error(error)
+        data => {
+          this.customer = data;
+          this.createMessage('success','添加成功。');
+          window.history.back();
+        },
+        error => {
+          this.createMessage('error','添加失败。');
+          console.error(error);
+        }
       );
+  }
+  public createMessage(type: string, msg: string): void {
+    this.message.create(type, msg);
   }
   public putCustomer(data) {
     this.customerDetailService
       .putCustomer(data)
       .subscribe(
-        data => this.customer = data,
-        error => console.error(error)
+        data => {
+          this.customer = data;
+          this.createMessage('success','修改成功。');
+          window.history.back();
+        },
+        error =>{ 
+          this.createMessage('error','修改失败。');
+          console.error(error);
+        }
       );
   }
 }

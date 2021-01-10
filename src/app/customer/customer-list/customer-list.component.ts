@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CustomerService } from "../customer.service";
 import { TestBed } from '@angular/core/testing';
 import { forkJoin } from 'rxjs';  // RxJS 6 syntax
+import { NzMessageService } from 'ng-zorro-antd/message';
+
 // interface SearchItem{
 //   keyword:string
 // }
@@ -158,15 +160,25 @@ export class CustomerListComponent implements OnInit {
     this.router.navigateByUrl("Customer/CustomerDetail/" + id);
   }
   public deleteRow(id): void {
-    this.customerDetailService.deleteCustomer(id).toPromise().then(()=>
+    this.customerDetailService.deleteCustomer(id).toPromise().then(()=>{
       this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, [])
-    );  
+      this.createMessage('success','删除成功。');}
+      )
+      .catch(error=>{
+        console.error(error);
+        this.createMessage('error','删除失败。');
+      }); 
   }
   public DeleteCustomers():void {
     var ids = this.ConvertToStrs();
-    this.customerDetailService.deleteCustomers(ids).toPromise().then(()=>
-        this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, [])
-      );  
+    this.customerDetailService.deleteCustomers(ids).toPromise().then(()=>{
+        this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
+        this.createMessage('success','删除成功。');}
+      )
+      .catch(error=>{
+        console.error(error);
+        this.createMessage('error','删除失败。');
+      });  
   }
   public requestDataFromMultipleSources(): Observable<any[]> {
     var ids = this.ConvertToStrs();    
@@ -191,23 +203,23 @@ export class CustomerListComponent implements OnInit {
     });
     return str.replace("^,","")+")";
   }
-  public deleteCustomers() {
-    var ids = this.ConvertToStrs();
-    this.customerDetailService
-      .deleteCustomers(ids)
-      .subscribe(
-        //data => this.customer = data,
-        //error => console.error(error)
-      );
-  }  
-  public deleteCustomer(id) {
-    this.customerDetailService
-      .deleteCustomer(id)
-      .subscribe(
-        //data => this.customer = data,
-        //error => console.error(error)
-      );
-  }  
+  // public deleteCustomers() {
+  //   var ids = this.ConvertToStrs();
+  //   this.customerDetailService
+  //     .deleteCustomers(ids)
+  //     .subscribe(
+  //       //data => this.customer = data,
+  //       //error => console.error(error)
+  //     );
+  // }  
+  // public deleteCustomer(id) {
+  //   this.customerDetailService
+  //     .deleteCustomer(id)
+  //     .subscribe(
+  //       //data => this.customer = data,
+  //       //error => console.error(error)
+  //     );
+  // }  
   loadDataFromServer(
     pageIndex: number,
     pageSize: number,
@@ -236,13 +248,11 @@ export class CustomerListComponent implements OnInit {
   }
 
   onQueryParamsChange(params: NzTableQueryParams): void {
-    console.log("inininin");
     if(this.firstRun)
     {
       this.firstRun = false;
       return;
     }
-    console.log("runrunrun");
     const { pageSize, pageIndex, sort, filter } = params;
     const currentSort = sort.find(item => (item.value !== null) && (item.value !== ""));
     const sortField = (currentSort && currentSort.key) || null;
@@ -251,17 +261,19 @@ export class CustomerListComponent implements OnInit {
     //const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
     this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, this.searchKeyWord, filter);
     this.pageIndex = pageIndex; 
-    console.log("params11111",params);
-    console.log("onQueryParamsChange");
   }
-
-  constructor(public customerDetailService:CustomerService, private randomUserService: RandomUserService, public router: Router,
+  public createMessage(type: string, msg: string): void {
+    this.message.create(type, msg);
+  }
+  constructor(
+    private message: NzMessageService,
+    public customerDetailService:CustomerService, 
+    private randomUserService: RandomUserService, 
+    public router: Router,
     public activeRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    //this.randomUserService.Test();
-    this.searchKeyWord = localStorage.getItem('searchKeyWord');
-    console.log("localStorage.getItem('pageIndex')",localStorage.getItem('pageIndex'));
+    this.searchKeyWord = localStorage.getItem('searchKeyWord')=="false"?"":localStorage.getItem('searchKeyWord');
     if(Number(localStorage.getItem('pageIndex')) != 0){
       this.pageIndex = Number(localStorage.getItem('pageIndex'));
     }
@@ -273,11 +285,7 @@ export class CustomerListComponent implements OnInit {
     }
     if(localStorage.getItem('sortField') == "Name"){
       this.NameSortOrder = localStorage.getItem('sortOrder');
-    }        
-    console.log("ngOnInit");
-    console.log("localStorage.getItem('sortField')",localStorage.getItem('sortField'));
-    console.log("localStorage.getItem('sortOrder')",localStorage.getItem('sortOrder'));
-
+    }
     this.loadDataFromServer(this.pageIndex, this.pageSize, localStorage.getItem('sortField'), localStorage.getItem('sortOrder'), this.searchKeyWord, []);
   }
 }
