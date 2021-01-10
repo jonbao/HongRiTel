@@ -7,19 +7,19 @@
       </nz-form-control>
     </nz-form-item>  
     <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>性别</nz-form-label>
+        <nz-form-label [nzSpan]="7">性别</nz-form-label>
         <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入用户性别!">
           <input nz-input formControlName="Gender" [(ngModel)]="customer.gender" />
         </nz-form-control>
       </nz-form-item>      
     <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>用户名称</nz-form-label>
+      <nz-form-label [nzSpan]="7">用户名称</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入用户名!">
         <input nz-input formControlName="UserName" [(ngModel)]="customer.userName" />
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>密码</nz-form-label>
+      <nz-form-label [nzSpan]="7">密码</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入密码!">
         <input nz-input formControlName="Password" [(ngModel)]="customer.password" />
       </nz-form-control>
@@ -31,7 +31,7 @@
       </nz-form-control>
     </nz-form-item>    
     <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>Email</nz-form-label>
+      <nz-form-label [nzSpan]="7">Email</nz-form-label>
       <nz-form-control [nzSpan]="15" nzHasFeedback [nzErrorTip]="emailErrorTpl">
         <input nz-input formControlName="Email" placeholder="email" type="email" [(ngModel)]="customer.email" />
         <ng-template #emailErrorTpl let-control>

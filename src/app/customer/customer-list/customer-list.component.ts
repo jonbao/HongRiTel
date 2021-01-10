@@ -143,6 +143,7 @@ export class CustomerListComponent implements OnInit {
     this.pageIndex = 1;
     this.NameSortOrder = null;
     this.UserNameSortOrder = null;
+    this.setOfCheckedId = new Set<string>();
     localStorage.removeItem("searchKeyWord");
     localStorage.removeItem("pageIndex");
     localStorage.removeItem("pageSize");
@@ -203,23 +204,6 @@ export class CustomerListComponent implements OnInit {
     });
     return str.replace("^,","")+")";
   }
-  // public deleteCustomers() {
-  //   var ids = this.ConvertToStrs();
-  //   this.customerDetailService
-  //     .deleteCustomers(ids)
-  //     .subscribe(
-  //       //data => this.customer = data,
-  //       //error => console.error(error)
-  //     );
-  // }  
-  // public deleteCustomer(id) {
-  //   this.customerDetailService
-  //     .deleteCustomer(id)
-  //     .subscribe(
-  //       //data => this.customer = data,
-  //       //error => console.error(error)
-  //     );
-  // }  
   loadDataFromServer(
     pageIndex: number,
     pageSize: number,
@@ -273,7 +257,7 @@ export class CustomerListComponent implements OnInit {
     public activeRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.searchKeyWord = localStorage.getItem('searchKeyWord')=="false"?"":localStorage.getItem('searchKeyWord');
+    this.searchKeyWord = localStorage.getItem('searchKeyWord')=="null"?"":localStorage.getItem('searchKeyWord');
     if(Number(localStorage.getItem('pageIndex')) != 0){
       this.pageIndex = Number(localStorage.getItem('pageIndex'));
     }

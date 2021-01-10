@@ -48,11 +48,11 @@ export class CustomerOperateComponent implements OnInit {
     public activeRoute: ActivatedRoute,
     private fb: FormBuilder) {
     this.validateForm = this.fb.group({
-      Name: ['', [Validators.required]],
+      Name: ['', [Validators.required, Validators.maxLength(100)]],
       Gender: ['', [Validators.maxLength(10)]],
-      UserName: ['', [Validators.required]],
-      Email: ['', [Validators.email, Validators.required]],
-      Password: ['', [Validators.required]],
+      UserName: ['', [Validators.maxLength(200)]],
+      Email: ['', [Validators.email, Validators.maxLength(200)]],
+      Password: ['', [Validators.maxLength(200)]],
       PhoneNumber: ['', [Validators.maxLength(200)]],
       ContactNote: ['', [Validators.maxLength(200)]],
       Remark: ['', [Validators.maxLength(200)]]
