@@ -30,6 +30,22 @@ import { CustomerService } from "./customer/customer.service";
 import { RouteReuseStrategy } from '@angular/router';
 import { AppRoutingCache } from './app-routing.cache';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { ProductListComponent } from './product/product-list/product-list.component';
+import { ProductOperateComponent } from './product/product-operate/product-operate.component';
+import { ProductDetailComponent } from './product/product-detail/product-detail.component';
+import { ProductService } from "./product/product.service";
+import { CategoryListComponent } from './category/category-list/category-list.component';
+import { CategoryOperateComponent } from './category/category-operate/category-operate.component';
+import { CategoryDetailComponent } from './category/category-detail/category-detail.component';
+import { CategoryService } from "./category/category.service";
+import { ExchangeRateListComponent } from './exchangerate/exchangerate-list/exchangerate-list.component';
+import { ExchangeRateOperateComponent } from './exchangerate/exchangerate-operate/exchangerate-operate.component';
+import { ExchangeRateDetailComponent } from './exchangerate/exchangerate-detail/exchangerate-detail.component';
+import { ExchangeRateService } from "./exchangerate/exchangerate.service";
+import { SystemDictionaryListComponent } from './systemdictionary/systemdictionary-list/systemdictionary-list.component';
+import { SystemDictionaryOperateComponent } from './systemdictionary/systemdictionary-operate/systemdictionary-operate.component';
+import { SystemDictionaryDetailComponent } from './systemdictionary/systemdictionary-detail/systemdictionary-detail.component';
+import { SystemDictionaryService } from "./systemdictionary/systemdictionary.service";
 
 registerLocaleData(zh);
 
@@ -38,7 +54,19 @@ registerLocaleData(zh);
     AppComponent,
     CustomerListComponent,
     CustomerOperateComponent,
-    CustomerDetailComponent
+    CustomerDetailComponent,
+    ProductListComponent,
+    ProductOperateComponent,
+    ProductDetailComponent,
+    CategoryListComponent,
+    CategoryOperateComponent,
+    CategoryDetailComponent,
+    ExchangeRateListComponent,
+    ExchangeRateOperateComponent,
+    ExchangeRateDetailComponent,
+    SystemDictionaryListComponent,
+    SystemDictionaryOperateComponent,
+    SystemDictionaryDetailComponent    
   ],
   imports: [
     BrowserModule,
@@ -64,6 +92,10 @@ registerLocaleData(zh);
   ],
   providers: [
     CustomerService,
+    ProductService,
+    CategoryService,
+    ExchangeRateService,
+    SystemDictionaryService,
     { provide: NZ_I18N, useValue: zh_CN },
     { provide: RouteReuseStrategy, useClass: AppRoutingCache }
   ],

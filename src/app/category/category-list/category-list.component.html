@@ -1,0 +1,47 @@
+<nz-input-group nzSearch nzSize="large">
+    <input type="text" nz-input placeholder="input search text" [(ngModel)]="searchKeyWord" />
+      <button nz-button nzType="primary" nzSize="large" nzSearch (click)="SearchCategory()">查询</button>     
+      <button nz-button nzType="primary" nzSize="large" (click)="AddCategory()">增加</button>
+      <button nz-popconfirm nzType="primary" [disabled]="setOfCheckedId.size === 0" nzPopconfirmTitle="Are you sure delete the selected category(s)?" nzPopconfirmPlacement="topLeft" nz-button nzSize="large" (nzOnConfirm)="DeleteCategorys()" [nzLoading]="loading" >删除</button>      
+    </nz-input-group>
+    <nz-table
+      nzSize="small"
+      nzShowSizeChanger
+      [nzData]="listOfRandomCategory"
+      [nzFrontPagination]="false"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [nzPageSize]="pageSize"
+      [nzPageIndex]="pageIndex"
+      (nzQueryParams)="onQueryParamsChange($event)"
+    >
+      <thead>
+        <tr>
+          <th
+          [nzSelections]="listOfSelection"
+          [(nzChecked)]="checked"
+          [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onAllChecked($event)"></th>      
+          <th nzColumnKey="CategoryName" [nzSortFn]="true" [(nzSortOrder)]="CategoryNameSortOrder">种类名称</th>
+          <th nzColumnKey="Price">价格</th>
+          <th nzColumnKey="MoneyType">币种</th>
+          <th nzColumnKey="Remark">备注</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listOfRandomCategory">
+          <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+          <td>{{ data.categoryName }}</td>
+          <td>{{ data.price }}</td>
+          <td>{{ data.moneyType }}</td>
+          <td>{{ data.remark }}</td>
+          <td>
+          <a (click)="ViewCategory(data.id)">查看</a> |
+          <a (click)="ModifyCategory(data.id)">修改</a> |
+          <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">删除</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+

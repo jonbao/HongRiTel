@@ -1,0 +1,36 @@
+
+<h2><span>汇率信息管理</span></h2><br>
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>汇率</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="ExchangeRateNumber" [(ngModel)]="exchangerate.exchangeRateNumber" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>币种</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="FromMoneyType" [(ngModel)]="exchangerate.fromMoneyType" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>兑换币种</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="ToMoneyType" [(ngModel)]="exchangerate.toMoneyType" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">备注</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="Remark" [(ngModel)]="exchangerate.remark" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzOffset]="7" [nzSpan]="15">
+        <button nz-button nzType="primary" nzSize="large" [disabled]="!validateForm.valid">Submit</button>
+        <button type="button" nz-button nzSize="large" (click)="Cancel()">Cancel</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+

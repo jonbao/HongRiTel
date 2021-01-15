@@ -1,0 +1,29 @@
+
+<h2><span>字典信息管理</span></h2><br>
+    <form nz-form>
+
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">字典名称</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ systemdictionary.dicName }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">字典内容</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ systemdictionary.dicValue }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">备注</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ systemdictionary.remark }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzOffset]="7" [nzSpan]="15">
+        <button nz-button nzType="primary" nzSize="large"(click)="Cancel()">Cancel</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+

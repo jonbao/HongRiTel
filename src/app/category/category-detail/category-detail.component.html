@@ -1,0 +1,33 @@
+<h2><span>种类信息管理</span></h2><br>
+    <form nz-form>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">种类名称</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ category.categoryName }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">价格</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ category.price }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">币种</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ category.moneyType }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">备注</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ category.remark }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzOffset]="7" [nzSpan]="15">
+        <button nz-button nzType="primary" nzSize="large"(click)="Cancel()">Cancel</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+

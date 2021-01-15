@@ -1,18 +1,19 @@
+
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn,ValidationErrors, Validators } from '@angular/forms';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Observer } from 'rxjs';
-import { CustomerService } from "../customer.service";
+import { ProductService } from "../product.service";
 import { ActivatedRoute, Router} from "@angular/router";
 import {Location} from '@angular/common';
 @Component({
-  selector: 'app-customer-detail',
-  templateUrl: './customer-detail.component.html',
-  styleUrls: ['./customer-detail.component.scss']
+  selector: 'app-product-detail',
+  templateUrl: './product-detail.component.html',
+  styleUrls: ['./product-detail.component.scss']
 })
-export class CustomerDetailComponent implements OnInit {
-  public customer: any = {};
-  constructor(public customerDetailService:CustomerService, 
+export class ProductDetailComponent implements OnInit {
+  public product: any = {};
+  constructor(public productDetailService:ProductService, 
     public router: Router,
     public activeRoute: ActivatedRoute,
     private _location: Location,
@@ -27,7 +28,7 @@ export class CustomerDetailComponent implements OnInit {
       id = params.get('id');
     });
     this.activeRoute.params.subscribe(
-      params => this.getCustomer(id)
+      params => this.getProduct(id)
     );
   }
 
@@ -35,12 +36,13 @@ export class CustomerDetailComponent implements OnInit {
     window.history.back();
     //this._location.back();
   }
-  public getCustomer(id) {
-    this.customerDetailService
-      .getCustomer(id)
+  public getProduct(id) {
+    this.productDetailService
+      .getProduct(id)
       .subscribe(
-        data => this.customer = data,
+        data => this.product = data,
         error => console.error(error)
       );
   }
 }
+

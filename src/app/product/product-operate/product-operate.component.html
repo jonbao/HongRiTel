@@ -1,0 +1,54 @@
+
+<h2><span>产品信息管理</span></h2><br>
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>种类</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="Category" [(ngModel)]="product.category" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">产品ID</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="ProductID" [(ngModel)]="product.productID" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">密码</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="Password" [(ngModel)]="product.password" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">销售价格</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="SalePrice" [(ngModel)]="product.salePrice" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">成本价格</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="BasePrice" [(ngModel)]="product.basePrice" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">币种</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="MoneyType" [(ngModel)]="product.moneyType" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">备注</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="Remark" [(ngModel)]="product.remark" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzOffset]="7" [nzSpan]="15">
+        <button nz-button nzType="primary" nzSize="large" [disabled]="!validateForm.valid">Submit</button>
+        <button type="button" nz-button nzSize="large" (click)="Cancel()">Cancel</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+

@@ -1,18 +1,19 @@
+
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn,ValidationErrors, Validators } from '@angular/forms';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Observer } from 'rxjs';
-import { CustomerService } from "../customer.service";
+import { SystemDictionaryService } from "../systemdictionary.service";
 import { ActivatedRoute, Router} from "@angular/router";
 import {Location} from '@angular/common';
 @Component({
-  selector: 'app-customer-detail',
-  templateUrl: './customer-detail.component.html',
-  styleUrls: ['./customer-detail.component.scss']
+  selector: 'app-systemdictionary-detail',
+  templateUrl: './systemdictionary-detail.component.html',
+  styleUrls: ['./systemdictionary-detail.component.scss']
 })
-export class CustomerDetailComponent implements OnInit {
-  public customer: any = {};
-  constructor(public customerDetailService:CustomerService, 
+export class SystemDictionaryDetailComponent implements OnInit {
+  public systemdictionary: any = {};
+  constructor(public systemdictionaryDetailService:SystemDictionaryService, 
     public router: Router,
     public activeRoute: ActivatedRoute,
     private _location: Location,
@@ -27,7 +28,7 @@ export class CustomerDetailComponent implements OnInit {
       id = params.get('id');
     });
     this.activeRoute.params.subscribe(
-      params => this.getCustomer(id)
+      params => this.getSystemDictionary(id)
     );
   }
 
@@ -35,12 +36,13 @@ export class CustomerDetailComponent implements OnInit {
     window.history.back();
     //this._location.back();
   }
-  public getCustomer(id) {
-    this.customerDetailService
-      .getCustomer(id)
+  public getSystemDictionary(id) {
+    this.systemdictionaryDetailService
+      .getSystemDictionary(id)
       .subscribe(
-        data => this.customer = data,
+        data => this.systemdictionary = data,
         error => console.error(error)
       );
   }
 }
+

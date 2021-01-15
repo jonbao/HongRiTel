@@ -1,19 +1,20 @@
+
 import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from "@angular/router";
-import { CustomerService } from "../customer.service";
+import { ExchangeRateService } from "../exchangerate.service";
 import { TestBed } from '@angular/core/testing';
 import { forkJoin } from 'rxjs';  // RxJS 6 syntax
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({ providedIn: 'root' })
-export class RandomCustomerService {
-  randomCustomerUrl = 'https://api.randomuser.me/';
-  CustomerUrl = 'http://localhost:1234/api/customers';
+export class RandomExchangeRateService {
+  randomExchangeRateUrl = 'https://api.randomuser.me/';
+  ExchangeRateUrl = 'http://localhost:1234/api/exchangerates';
 
-  getCustomers(
+  getExchangeRates(
     pageIndex: number,
     pageSize: number,
     sortField: string|"",
@@ -33,11 +34,11 @@ export class RandomCustomerService {
       });
     });
     console.log("params",params);
-    return this.http.get(`${this.CustomerUrl}`, { params, observe: 'response'});
+    return this.http.get(`${this.ExchangeRateUrl}`, { params, observe: 'response'});
   }
   Test(){
 
-    this.http.get(this.CustomerUrl,{
+    this.http.get(this.ExchangeRateUrl,{
       params: {
         count: String(1)
       },
@@ -48,7 +49,7 @@ export class RandomCustomerService {
       console.log(data.headers.get("x-pagination"));
     });
 
-    // this.http.get(this.CustomerUrl,{observe: 'response'}).subscribe(  (data: HttpResponse<any>) => {
+    // this.http.get(this.ExchangeRateUrl,{observe: 'response'}).subscribe(  (data: HttpResponse<any>) => {
     //     console.log("data.headers123");
     //     console.log(data);
     //     console.log(data.headers.get("x-pagination"));
@@ -59,22 +60,21 @@ export class RandomCustomerService {
 }
 
 @Component({
-  selector: 'app-customer-list',  
-  templateUrl: './customer-list.component.html',
-  styleUrls: ['./customer-list.component.scss']
+  selector: 'app-exchangerate-list',  
+  templateUrl: './exchangerate-list.component.html',
+  styleUrls: ['./exchangerate-list.component.scss']
 })
-export class CustomerListComponent implements OnInit {
-  //public customerList: Array<any>;
+export class ExchangeRateListComponent implements OnInit {
+  //public exchangerateList: Array<any>;
   total = 1;
-  listOfRandomCustomer: Array<any>;
+  listOfRandomExchangeRate: Array<any>;
   loading = true;
   pageSize = 10;
   pageIndex = 1;
   checked = false;
   indeterminate = false;
   searchKeyWord = "";
-  NameSortOrder = "";
-  UserNameSortOrder = "";
+  ExchangeRateNumberSortOrder = "";
   firstRun = true;
   setOfCheckedId = new Set<string>();
   listOfSelection = [
@@ -87,20 +87,20 @@ export class CustomerListComponent implements OnInit {
     {
       text: 'Select Odd Row',
       onSelect: () => {
-        this.listOfRandomCustomer.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 !== 0));
+        this.listOfRandomExchangeRate.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 !== 0));
         this.refreshCheckedStatus();
       }
     },
     {
       text: 'Select Even Row',
       onSelect: () => {
-        this.listOfRandomCustomer.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 === 0));
+        this.listOfRandomExchangeRate.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 === 0));
         this.refreshCheckedStatus();
       }
     }
   ];  
   onAllChecked(value: boolean): void {
-    this.listOfRandomCustomer.forEach(item => this.updateCheckedSet(item.id, value));
+    this.listOfRandomExchangeRate.forEach(item => this.updateCheckedSet(item.id, value));
     this.refreshCheckedStatus();
   }
   updateCheckedSet(id: string, checked: boolean): void {
@@ -116,18 +116,17 @@ export class CustomerListComponent implements OnInit {
   }
 
   refreshCheckedStatus(): void {
-    this.checked = this.listOfRandomCustomer.every(item => this.setOfCheckedId.has(item.id));
-    this.indeterminate = this.listOfRandomCustomer.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
+    this.checked = this.listOfRandomExchangeRate.every(item => this.setOfCheckedId.has(item.id));
+    this.indeterminate = this.listOfRandomExchangeRate.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
 
   filterGender = [
     { text: 'male', value: 'male' },
     { text: 'female', value: 'female' }
   ];
-  public SearchCustomer(): void {
+  public SearchExchangeRate(): void {
     this.pageIndex = 1;
-    this.NameSortOrder = null;
-    this.UserNameSortOrder = null;
+    this.ExchangeRateNumberSortOrder = null;
     this.setOfCheckedId = new Set<string>();
     localStorage.removeItem("searchKeyWord");
     localStorage.removeItem("pageIndex");
@@ -136,17 +135,17 @@ export class CustomerListComponent implements OnInit {
     localStorage.removeItem("sortOrder");    
     this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
   }
-  public AddCustomer(): void {
-    this.router.navigateByUrl("Customer/CustomerOpe/");
+  public AddExchangeRate(): void {
+    this.router.navigateByUrl("ExchangeRate/ExchangeRateOpe/");
   }
-  public ModifyCustomer(id): void {
-    this.router.navigateByUrl("Customer/CustomerOpe/" + id);
+  public ModifyExchangeRate(id): void {
+    this.router.navigateByUrl("ExchangeRate/ExchangeRateOpe/" + id);
   }
-  public ViewCustomer(id): void {
-    this.router.navigateByUrl("Customer/CustomerDetail/" + id);
+  public ViewExchangeRate(id): void {
+    this.router.navigateByUrl("ExchangeRate/ExchangeRateDetail/" + id);
   }
   public deleteRow(id): void {
-    this.customerDetailService.deleteCustomer(id).toPromise().then(()=>{
+    this.exchangerateDetailService.deleteExchangeRate(id).toPromise().then(()=>{
       this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, [])
       this.createMessage('success','删除成功。');}
       )
@@ -155,9 +154,9 @@ export class CustomerListComponent implements OnInit {
         this.createMessage('error','删除失败。');
       }); 
   }
-  public DeleteCustomers():void {
+  public DeleteExchangeRates():void {
     var ids = this.ConvertToStrs();
-    this.customerDetailService.deleteCustomers(ids).toPromise().then(()=>{
+    this.exchangerateDetailService.deleteExchangeRates(ids).toPromise().then(()=>{
         this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
         this.createMessage('success','删除成功。');}
       )
@@ -168,8 +167,8 @@ export class CustomerListComponent implements OnInit {
   }
   public requestDataFromMultipleSources(): Observable<any[]> {
     var ids = this.ConvertToStrs();    
-    let response1 = this.customerDetailService.deleteCustomers(ids);
-    let response2 = this.randomCustomerService.getCustomers(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
+    let response1 = this.exchangerateDetailService.deleteExchangeRates(ids);
+    let response2 = this.randomExchangeRateService.getExchangeRates(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
     // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
     const observable = new Observable(function subscribe(subscriber) {
       subscriber.next(1);
@@ -198,12 +197,12 @@ export class CustomerListComponent implements OnInit {
     filter: Array<{ key: string; value: string[] }>
   ): void {
     this.loading = true;
-    this.randomCustomerService.getCustomers(pageIndex, pageSize, sortField, sortOrder,searchKeyWord, filter).subscribe( data => {
+    this.randomExchangeRateService.getExchangeRates(pageIndex, pageSize, sortField, sortOrder,searchKeyWord, filter).subscribe( data => {
       this.loading = false;
       var json = JSON.parse(data.headers.get("x-pagination"));
       this.total = json.totalCount;
-      this.listOfRandomCustomer = data.body;
-      if(this.listOfRandomCustomer.length == 0)
+      this.listOfRandomExchangeRate = data.body;
+      if(this.listOfRandomExchangeRate.length == 0)
       {
         this.pageIndex = this.pageIndex - 1;
         if(this.pageIndex <= 1) this.pageIndex = 1;
@@ -236,8 +235,8 @@ export class CustomerListComponent implements OnInit {
   }
   constructor(
     private message: NzMessageService,
-    public customerDetailService:CustomerService, 
-    private randomCustomerService: RandomCustomerService, 
+    public exchangerateDetailService:ExchangeRateService, 
+    private randomExchangeRateService: RandomExchangeRateService, 
     public router: Router,
     public activeRoute: ActivatedRoute) {}
 
@@ -249,12 +248,11 @@ export class CustomerListComponent implements OnInit {
     if(Number(localStorage.getItem('pageSize')) != 0){
       this.pageSize = Number(localStorage.getItem('pageSize'));
     }
-    if(localStorage.getItem('sortField') == "UserName"){
-      this.UserNameSortOrder = localStorage.getItem('sortOrder');
-    }
-    if(localStorage.getItem('sortField') == "Name"){
-      this.NameSortOrder = localStorage.getItem('sortOrder');
+    if(localStorage.getItem('sortField') == "ExchangeRateNumber"){
+      this.ExchangeRateNumberSortOrder = localStorage.getItem('sortOrder');
     }
     this.loadDataFromServer(this.pageIndex, this.pageSize, localStorage.getItem('sortField'), localStorage.getItem('sortOrder'), this.searchKeyWord, []);
   }
 }
+
+

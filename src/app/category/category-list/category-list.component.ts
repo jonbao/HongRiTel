@@ -1,19 +1,20 @@
+
 import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from "@angular/router";
-import { CustomerService } from "../customer.service";
+import { CategoryService } from "../category.service";
 import { TestBed } from '@angular/core/testing';
 import { forkJoin } from 'rxjs';  // RxJS 6 syntax
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({ providedIn: 'root' })
-export class RandomCustomerService {
-  randomCustomerUrl = 'https://api.randomuser.me/';
-  CustomerUrl = 'http://localhost:1234/api/customers';
+export class RandomCategoryService {
+  randomCategoryUrl = 'https://api.randomuser.me/';
+  CategoryUrl = 'http://localhost:1234/api/categorys';
 
-  getCustomers(
+  getCategorys(
     pageIndex: number,
     pageSize: number,
     sortField: string|"",
@@ -33,11 +34,11 @@ export class RandomCustomerService {
       });
     });
     console.log("params",params);
-    return this.http.get(`${this.CustomerUrl}`, { params, observe: 'response'});
+    return this.http.get(`${this.CategoryUrl}`, { params, observe: 'response'});
   }
   Test(){
 
-    this.http.get(this.CustomerUrl,{
+    this.http.get(this.CategoryUrl,{
       params: {
         count: String(1)
       },
@@ -48,7 +49,7 @@ export class RandomCustomerService {
       console.log(data.headers.get("x-pagination"));
     });
 
-    // this.http.get(this.CustomerUrl,{observe: 'response'}).subscribe(  (data: HttpResponse<any>) => {
+    // this.http.get(this.CategoryUrl,{observe: 'response'}).subscribe(  (data: HttpResponse<any>) => {
     //     console.log("data.headers123");
     //     console.log(data);
     //     console.log(data.headers.get("x-pagination"));
@@ -59,22 +60,21 @@ export class RandomCustomerService {
 }
 
 @Component({
-  selector: 'app-customer-list',  
-  templateUrl: './customer-list.component.html',
-  styleUrls: ['./customer-list.component.scss']
+  selector: 'app-category-list',  
+  templateUrl: './category-list.component.html',
+  styleUrls: ['./category-list.component.scss']
 })
-export class CustomerListComponent implements OnInit {
-  //public customerList: Array<any>;
+export class CategoryListComponent implements OnInit {
+  //public categoryList: Array<any>;
   total = 1;
-  listOfRandomCustomer: Array<any>;
+  listOfRandomCategory: Array<any>;
   loading = true;
   pageSize = 10;
   pageIndex = 1;
   checked = false;
   indeterminate = false;
   searchKeyWord = "";
-  NameSortOrder = "";
-  UserNameSortOrder = "";
+  CategoryNameSortOrder = "";
   firstRun = true;
   setOfCheckedId = new Set<string>();
   listOfSelection = [
@@ -87,20 +87,20 @@ export class CustomerListComponent implements OnInit {
     {
       text: 'Select Odd Row',
       onSelect: () => {
-        this.listOfRandomCustomer.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 !== 0));
+        this.listOfRandomCategory.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 !== 0));
         this.refreshCheckedStatus();
       }
     },
     {
       text: 'Select Even Row',
       onSelect: () => {
-        this.listOfRandomCustomer.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 === 0));
+        this.listOfRandomCategory.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 === 0));
         this.refreshCheckedStatus();
       }
     }
   ];  
   onAllChecked(value: boolean): void {
-    this.listOfRandomCustomer.forEach(item => this.updateCheckedSet(item.id, value));
+    this.listOfRandomCategory.forEach(item => this.updateCheckedSet(item.id, value));
     this.refreshCheckedStatus();
   }
   updateCheckedSet(id: string, checked: boolean): void {
@@ -116,18 +116,17 @@ export class CustomerListComponent implements OnInit {
   }
 
   refreshCheckedStatus(): void {
-    this.checked = this.listOfRandomCustomer.every(item => this.setOfCheckedId.has(item.id));
-    this.indeterminate = this.listOfRandomCustomer.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
+    this.checked = this.listOfRandomCategory.every(item => this.setOfCheckedId.has(item.id));
+    this.indeterminate = this.listOfRandomCategory.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
 
   filterGender = [
     { text: 'male', value: 'male' },
     { text: 'female', value: 'female' }
   ];
-  public SearchCustomer(): void {
+  public SearchCategory(): void {
     this.pageIndex = 1;
-    this.NameSortOrder = null;
-    this.UserNameSortOrder = null;
+    this.CategoryNameSortOrder = null;
     this.setOfCheckedId = new Set<string>();
     localStorage.removeItem("searchKeyWord");
     localStorage.removeItem("pageIndex");
@@ -136,17 +135,17 @@ export class CustomerListComponent implements OnInit {
     localStorage.removeItem("sortOrder");    
     this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
   }
-  public AddCustomer(): void {
-    this.router.navigateByUrl("Customer/CustomerOpe/");
+  public AddCategory(): void {
+    this.router.navigateByUrl("Category/CategoryOpe/");
   }
-  public ModifyCustomer(id): void {
-    this.router.navigateByUrl("Customer/CustomerOpe/" + id);
+  public ModifyCategory(id): void {
+    this.router.navigateByUrl("Category/CategoryOpe/" + id);
   }
-  public ViewCustomer(id): void {
-    this.router.navigateByUrl("Customer/CustomerDetail/" + id);
+  public ViewCategory(id): void {
+    this.router.navigateByUrl("Category/CategoryDetail/" + id);
   }
   public deleteRow(id): void {
-    this.customerDetailService.deleteCustomer(id).toPromise().then(()=>{
+    this.categoryDetailService.deleteCategory(id).toPromise().then(()=>{
       this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, [])
       this.createMessage('success','删除成功。');}
       )
@@ -155,9 +154,9 @@ export class CustomerListComponent implements OnInit {
         this.createMessage('error','删除失败。');
       }); 
   }
-  public DeleteCustomers():void {
+  public DeleteCategorys():void {
     var ids = this.ConvertToStrs();
-    this.customerDetailService.deleteCustomers(ids).toPromise().then(()=>{
+    this.categoryDetailService.deleteCategorys(ids).toPromise().then(()=>{
         this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
         this.createMessage('success','删除成功。');}
       )
@@ -168,8 +167,8 @@ export class CustomerListComponent implements OnInit {
   }
   public requestDataFromMultipleSources(): Observable<any[]> {
     var ids = this.ConvertToStrs();    
-    let response1 = this.customerDetailService.deleteCustomers(ids);
-    let response2 = this.randomCustomerService.getCustomers(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
+    let response1 = this.categoryDetailService.deleteCategorys(ids);
+    let response2 = this.randomCategoryService.getCategorys(this.pageIndex, this.pageSize, null, null, this.searchKeyWord, []);
     // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
     const observable = new Observable(function subscribe(subscriber) {
       subscriber.next(1);
@@ -198,12 +197,12 @@ export class CustomerListComponent implements OnInit {
     filter: Array<{ key: string; value: string[] }>
   ): void {
     this.loading = true;
-    this.randomCustomerService.getCustomers(pageIndex, pageSize, sortField, sortOrder,searchKeyWord, filter).subscribe( data => {
+    this.randomCategoryService.getCategorys(pageIndex, pageSize, sortField, sortOrder,searchKeyWord, filter).subscribe( data => {
       this.loading = false;
       var json = JSON.parse(data.headers.get("x-pagination"));
       this.total = json.totalCount;
-      this.listOfRandomCustomer = data.body;
-      if(this.listOfRandomCustomer.length == 0)
+      this.listOfRandomCategory = data.body;
+      if(this.listOfRandomCategory.length == 0)
       {
         this.pageIndex = this.pageIndex - 1;
         if(this.pageIndex <= 1) this.pageIndex = 1;
@@ -236,8 +235,8 @@ export class CustomerListComponent implements OnInit {
   }
   constructor(
     private message: NzMessageService,
-    public customerDetailService:CustomerService, 
-    private randomCustomerService: RandomCustomerService, 
+    public categoryDetailService:CategoryService, 
+    private randomCategoryService: RandomCategoryService, 
     public router: Router,
     public activeRoute: ActivatedRoute) {}
 
@@ -249,12 +248,11 @@ export class CustomerListComponent implements OnInit {
     if(Number(localStorage.getItem('pageSize')) != 0){
       this.pageSize = Number(localStorage.getItem('pageSize'));
     }
-    if(localStorage.getItem('sortField') == "UserName"){
-      this.UserNameSortOrder = localStorage.getItem('sortOrder');
-    }
-    if(localStorage.getItem('sortField') == "Name"){
-      this.NameSortOrder = localStorage.getItem('sortOrder');
+    if(localStorage.getItem('sortField') == "CategoryName"){
+      this.CategoryNameSortOrder = localStorage.getItem('sortOrder');
     }
     this.loadDataFromServer(this.pageIndex, this.pageSize, localStorage.getItem('sortField'), localStorage.getItem('sortOrder'), this.searchKeyWord, []);
   }
 }
+
+

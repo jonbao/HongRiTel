@@ -1,0 +1,48 @@
+
+<nz-input-group nzSearch nzSize="large">
+    <input type="text" nz-input placeholder="input search text" [(ngModel)]="searchKeyWord" />
+      <button nz-button nzType="primary" nzSize="large" nzSearch (click)="SearchExchangeRate()">查询</button>     
+      <button nz-button nzType="primary" nzSize="large" (click)="AddExchangeRate()">增加</button>
+      <button nz-popconfirm nzType="primary" [disabled]="setOfCheckedId.size === 0" nzPopconfirmTitle="Are you sure delete the selected exchangerate(s)?" nzPopconfirmPlacement="topLeft" nz-button nzSize="large" (nzOnConfirm)="DeleteExchangeRates()" [nzLoading]="loading" >删除</button>      
+      </nz-input-group>
+    <nz-table
+      nzSize="small"
+      nzShowSizeChanger
+      [nzData]="listOfRandomExchangeRate"
+      [nzFrontPagination]="false"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [nzPageSize]="pageSize"
+      [nzPageIndex]="pageIndex"
+      (nzQueryParams)="onQueryParamsChange($event)"
+    >
+      <thead>
+        <tr>
+          <th
+          [nzSelections]="listOfSelection"
+          [(nzChecked)]="checked"
+          [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onAllChecked($event)"></th>      
+          <th nzColumnKey="ExchangeRateNumber" [nzSortFn]="true" [(nzSortOrder)]="ExchangeRateNumberSortOrder">汇率</th>
+          <th nzColumnKey="FromMoneyType">币种</th>
+          <th nzColumnKey="ToMoneyType">兑换币种</th>
+          <th nzColumnKey="Remark">备注</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listOfRandomExchangeRate">
+          <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+          <td>{{ data.exchangeRateNumber }}</td>
+          <td>{{ data.fromMoneyType }}</td>
+          <td>{{ data.toMoneyType }}</td>
+          <td>{{ data.remark }}</td>
+          <td>
+          <a (click)="ViewExchangeRate(data.id)">查看</a> |
+          <a (click)="ModifyExchangeRate(data.id)">修改</a> |
+          <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">删除</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+

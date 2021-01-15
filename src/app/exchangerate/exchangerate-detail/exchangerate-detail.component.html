@@ -1,0 +1,35 @@
+
+<h2><span>汇率信息管理</span></h2><br>
+    <form nz-form>
+
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">汇率</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ exchangerate.exchangeRateNumber }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">币种</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ exchangerate.fromMoneyType }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">兑换币种</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ exchangerate.toMoneyType }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">备注</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ exchangerate.remark }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzOffset]="7" [nzSpan]="15">
+        <button nz-button nzType="primary" nzSize="large"(click)="Cancel()">Cancel</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+

@@ -1,0 +1,30 @@
+
+<h2><span>字典信息管理</span></h2><br>
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>字典名称</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="DicName" [(ngModel)]="systemdictionary.dicName" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>字典内容</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="DicValue" [(ngModel)]="systemdictionary.dicValue" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7">备注</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="Remark" [(ngModel)]="systemdictionary.remark" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzOffset]="7" [nzSpan]="15">
+        <button nz-button nzType="primary" nzSize="large" [disabled]="!validateForm.valid">Submit</button>
+        <button type="button" nz-button nzSize="large" (click)="Cancel()">Cancel</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
