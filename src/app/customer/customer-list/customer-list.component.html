@@ -1,6 +1,6 @@
 <nz-input-group nzSearch nzSize="large">
     <input type="text" nz-input placeholder="input search text" [(ngModel)]="searchKeyWord" />
-      <button nz-button nzType="primary" nzSize="large" nzSearch (click)="SearchCustomer()">查询1</button>     
+      <button nz-button nzType="primary" nzSize="large" nzSearch (click)="SearchCustomer()">查询</button>     
       <button nz-button nzType="primary" nzSize="large" (click)="AddCustomer()">增加</button>
       <button nz-popconfirm nzType="primary" [disabled]="setOfCheckedId.size === 0" nzPopconfirmTitle="Are you sure delete the selected customer(s)?" nzPopconfirmPlacement="topLeft" nz-button nzSize="large" (nzOnConfirm)="DeleteCustomers()" [nzLoading]="loading" >删除</button>      
       </nz-input-group>
