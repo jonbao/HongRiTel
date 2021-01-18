@@ -50,6 +50,7 @@ export class SystemDictionaryOperateComponent implements OnInit {
     private fb: FormBuilder) {
     this.validateForm = this.fb.group({
 
+          DicType: ['', [Validators.required,Validators.maxLength(200)]],
           DicName: ['', [Validators.required,Validators.maxLength(200)]],
           DicValue: ['', [Validators.required,Validators.maxLength(200)]],
           Remark: ['', [Validators.maxLength(500)]]

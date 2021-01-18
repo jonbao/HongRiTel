@@ -23,7 +23,8 @@
           [(nzChecked)]="checked"
           [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="onAllChecked($event)"></th>      
-          <th nzColumnKey="DicName" [nzSortFn]="true" [(nzSortOrder)]="DicNameSortOrder">字典名称</th>
+          <th nzColumnKey="DicType" [nzSortFn]="true" [(nzSortOrder)]="DicTypeSortOrder">字典类型</th>
+          <th nzColumnKey="DicName">字典名称</th>
           <th nzColumnKey="DicValue">字典内容</th>
           <th nzColumnKey="Remark">备注</th>
           <th>操作</th>
@@ -32,6 +33,7 @@
       <tbody>
         <tr *ngFor="let data of listOfRandomSystemDictionary">
           <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+          <td>{{ data.dicType }}</td>
           <td>{{ data.dicName }}</td>
           <td>{{ data.dicValue }}</td>
           <td>{{ data.remark }}</td>

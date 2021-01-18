@@ -3,6 +3,12 @@
     <form nz-form>
 
     <nz-form-item>
+        <nz-form-label [nzSpan]="7">字典类型</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
+        {{ systemdictionary.dicType }}
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
         <nz-form-label [nzSpan]="7">字典名称</nz-form-label>
         <nz-form-control [nzSpan]="15" nzHasFeedback style="word-wrap: break-word;word-break: break-all;overflow: hidden;">
         {{ systemdictionary.dicName }}

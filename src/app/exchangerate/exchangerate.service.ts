@@ -1,11 +1,11 @@
-
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { GlobalVariable } from '../../global';
 
 @Injectable()
 export class ExchangeRateService {
-    public exchangerateListURL = "http://localhost:1234/api/exchangerates";
+    public exchangerateListURL = GlobalVariable.BASE_API_URL + "api/exchangerates";
 
     constructor(public httpClient: HttpClient) {
     }

@@ -3,6 +3,12 @@
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
 
     <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>字典类型</nz-form-label>
+        <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
+          <input nz-input formControlName="DicType" [(ngModel)]="systemdictionary.dicType" />
+        </nz-form-control>
+      </nz-form-item>
+    <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>字典名称</nz-form-label>
         <nz-form-control [nzSpan]="15" nzHasFeedback nzErrorTip="请输入{des}!">
           <input nz-input formControlName="DicName" [(ngModel)]="systemdictionary.dicName" />

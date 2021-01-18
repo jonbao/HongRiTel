@@ -8,11 +8,11 @@ import { SystemDictionaryService } from "../systemdictionary.service";
 import { TestBed } from '@angular/core/testing';
 import { forkJoin } from 'rxjs';  // RxJS 6 syntax
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { GlobalVariable } from '../../../global';
 
 @Injectable({ providedIn: 'root' })
 export class RandomSystemDictionaryService {
-  randomSystemDictionaryUrl = 'https://api.randomuser.me/';
-  SystemDictionaryUrl = 'http://localhost:1234/api/systemdictionarys';
+  SystemDictionaryUrl = GlobalVariable.BASE_API_URL + 'api/systemdictionarys';
 
   getSystemDictionarys(
     pageIndex: number,
@@ -74,7 +74,7 @@ export class SystemDictionaryListComponent implements OnInit {
   checked = false;
   indeterminate = false;
   searchKeyWord = "";
-  DicNameSortOrder = "";
+  DicTypeSortOrder = "";
   firstRun = true;
   setOfCheckedId = new Set<string>();
   listOfSelection = [
@@ -126,7 +126,7 @@ export class SystemDictionaryListComponent implements OnInit {
   ];
   public SearchSystemDictionary(): void {
     this.pageIndex = 1;
-    this.DicNameSortOrder = null;
+    this.DicTypeSortOrder = null;
     this.setOfCheckedId = new Set<string>();
     localStorage.removeItem("searchKeyWord");
     localStorage.removeItem("pageIndex");
@@ -248,8 +248,8 @@ export class SystemDictionaryListComponent implements OnInit {
     if(Number(localStorage.getItem('pageSize')) != 0){
       this.pageSize = Number(localStorage.getItem('pageSize'));
     }
-    if(localStorage.getItem('sortField') == "DicName"){
-      this.DicNameSortOrder = localStorage.getItem('sortOrder');
+    if(localStorage.getItem('sortField') == "DicType"){
+      this.DicTypeSortOrder = localStorage.getItem('sortOrder');
     }
     this.loadDataFromServer(this.pageIndex, this.pageSize, localStorage.getItem('sortField'), localStorage.getItem('sortOrder'), this.searchKeyWord, []);
   }

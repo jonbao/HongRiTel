@@ -7,11 +7,11 @@ import { CustomerService } from "../customer.service";
 import { TestBed } from '@angular/core/testing';
 import { forkJoin } from 'rxjs';  // RxJS 6 syntax
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { GlobalVariable } from '../../../global';
 
 @Injectable({ providedIn: 'root' })
 export class RandomCustomerService {
-  randomCustomerUrl = 'https://api.randomuser.me/';
-  CustomerUrl = 'http://localhost:1234/api/customers';
+  CustomerUrl = GlobalVariable.BASE_API_URL + 'api/customers';
 
   getCustomers(
     pageIndex: number,

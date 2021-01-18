@@ -8,11 +8,11 @@ import { ExchangeRateService } from "../exchangerate.service";
 import { TestBed } from '@angular/core/testing';
 import { forkJoin } from 'rxjs';  // RxJS 6 syntax
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { GlobalVariable } from '../../../global';
 
 @Injectable({ providedIn: 'root' })
 export class RandomExchangeRateService {
-  randomExchangeRateUrl = 'https://api.randomuser.me/';
-  ExchangeRateUrl = 'http://localhost:1234/api/exchangerates';
+  ExchangeRateUrl = GlobalVariable.BASE_API_URL + 'api/exchangerates';
 
   getExchangeRates(
     pageIndex: number,

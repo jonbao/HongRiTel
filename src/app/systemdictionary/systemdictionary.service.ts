@@ -1,12 +1,12 @@
-
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { GlobalVariable } from '../../global';
 
 @Injectable()
 export class SystemDictionaryService {
-    public systemdictionaryListURL = "http://localhost:1234/api/systemdictionarys";
-
+    public systemdictionaryListURL = GlobalVariable.BASE_API_URL + "api/systemdictionarys";
+    
     constructor(public httpClient: HttpClient) {
     }
 

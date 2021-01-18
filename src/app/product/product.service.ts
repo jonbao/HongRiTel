@@ -1,14 +1,12 @@
-
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { GlobalVariable } from '../../global';
 
 @Injectable()
 export class ProductService {
-    public productDetailURL = "mock-data/post-mock.json";
-    public productListURL = "http://localhost:1234/api/products";
-    public productListSearchURL = "mock-data/postlist-search-mock.json";
-
+    public productListURL = GlobalVariable.BASE_API_URL + "api/products";
+    
     constructor(public httpClient: HttpClient) {
     }
 

@@ -8,11 +8,11 @@ import { ProductService } from "../product.service";
 import { TestBed } from '@angular/core/testing';
 import { forkJoin } from 'rxjs';  // RxJS 6 syntax
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { GlobalVariable } from '../../../global';
 
 @Injectable({ providedIn: 'root' })
 export class RandomProductService {
-  randomProductUrl = 'https://api.randomuser.me/';
-  ProductUrl = 'http://localhost:1234/api/products';
+  ProductUrl = GlobalVariable.BASE_API_URL + 'api/products';
 
   getProducts(
     pageIndex: number,

@@ -8,12 +8,11 @@ import { CategoryService } from "../category.service";
 import { TestBed } from '@angular/core/testing';
 import { forkJoin } from 'rxjs';  // RxJS 6 syntax
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { GlobalVariable } from '../../../global';
 
 @Injectable({ providedIn: 'root' })
 export class RandomCategoryService {
-  randomCategoryUrl = 'https://api.randomuser.me/';
-  CategoryUrl = 'http://localhost:1234/api/categorys';
-
+  CategoryUrl = GlobalVariable.BASE_API_URL + 'api/categorys';
   getCategorys(
     pageIndex: number,
     pageSize: number,
