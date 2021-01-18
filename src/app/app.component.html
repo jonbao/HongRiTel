@@ -7,12 +7,18 @@
             [nzTrigger]="null">
     <div class="sidebar-logo">
       <a href="https://ng.ant.design/" target="_blank">
-        <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
-        <h1>KoreaVPN</h1>
+        <img src="../assets/images/logo.png" alt="logo" style="width:90%">
       </a>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
+      <li nz-submenu nzOpen nzTitle="订单管理" nzIcon="money-collect">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a>订单管理</a>
+          </li>
+        </ul>
+      </li>      
+      <li nz-submenu nzOpen nzTitle="系统管理" nzIcon="setting">
         <ul>
           <!-- <li nz-menu-item>
             <a routerLink="/welcome">Welcome</a>
@@ -34,13 +40,6 @@
           </li>
         </ul>
       </li>
-      <!-- <li nz-submenu nzOpen nzTitle="Form" nzIcon="form">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a>Basic Form</a>
-          </li>
-        </ul>
-      </li> -->
     </ul>
   </nz-sider>
   <nz-layout>
